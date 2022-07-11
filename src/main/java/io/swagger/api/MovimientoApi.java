@@ -5,6 +5,7 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.MovimientoDto;
 import io.swagger.model.MensajeSalida;
 import io.swagger.model.MovimientoCliente;
 import io.swagger.model.MovimientoDto;
@@ -50,5 +51,32 @@ public interface MovimientoApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<?> postMovimiento(
 			@Parameter(in = ParameterIn.DEFAULT, description = "", schema = @Schema()) @Valid @RequestBody MovimientoDto body);
+
+	@Operation(summary = "Actualizar Movimiento", description = "", tags = { "Movimientos" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MovimientoDto.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))) })
+	@RequestMapping(value = "/Movimiento/actualizarMovimiento", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.PUT)
+	ResponseEntity<?> putMovimiento(
+			@Parameter(in = ParameterIn.DEFAULT, description = "", schema = @Schema()) @Valid @RequestBody MovimientoDto body);
+
+	@Operation(summary = "consultar Movimiento", description = "", tags = { "Movimientos" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MovimientoDto.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))) })
+	@RequestMapping(value = "/Movimiento/obtenerMovimiento", produces = { "application/json" }, method = RequestMethod.GET)
+	ResponseEntity<?> getMovimiento();
+
+	@Operation(summary = "eliminarMovimiento", description = "Elimina un Movimiento por ID", tags = { "Movimientos" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Boolean.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = MensajeSalida.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = MensajeSalida.class))) })
+	@RequestMapping(value = "/Movimientos/{MovimientoId}", produces = "application/json; charset=UTF-8", method = RequestMethod.DELETE)
+	ResponseEntity<?> eliminarMovimiento(
+			@Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("MovimientoId") String movimientoId);
 
 }

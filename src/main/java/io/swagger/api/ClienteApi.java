@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,5 +36,32 @@ public interface ClienteApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<?> postClienteCrearCliente(
 			@Parameter(in = ParameterIn.DEFAULT, description = "", schema = @Schema()) @Valid @RequestBody ClienteDto body);
+
+	@Operation(summary = "Actualizar Cliente", description = "", tags = { "Clientes" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteDto.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))) })
+	@RequestMapping(value = "/Cliente/actualizarCliente", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.PUT)
+	ResponseEntity<?> putCliente(
+			@Parameter(in = ParameterIn.DEFAULT, description = "", schema = @Schema()) @Valid @RequestBody ClienteDto body);
+
+	@Operation(summary = "consultar Cliente", description = "", tags = { "Clientes" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteDto.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeSalida.class))) })
+	@RequestMapping(value = "/Cliente/obtenerCliente", produces = { "application/json" }, method = RequestMethod.GET)
+	ResponseEntity<?> getCliente();
+
+	@Operation(summary = "eliminarCliente", description = "Elimina un Cliente por ID", tags = { "Clientes" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Boolean.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = MensajeSalida.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = MensajeSalida.class))) })
+	@RequestMapping(value = "/clientes/{clienteId}", produces = "application/json; charset=UTF-8", method = RequestMethod.DELETE)
+	ResponseEntity<?> eliminarCliente(
+			@Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("clienteId") String clienteId);
 
 }

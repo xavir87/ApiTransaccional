@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DiscriminatorOptions;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -33,7 +34,8 @@ public class Cliente extends Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name="system-uuid", strategy = "uuid")
 	@Column(name="cliente_id", unique = true)
 	private UUID clienteid;
 	

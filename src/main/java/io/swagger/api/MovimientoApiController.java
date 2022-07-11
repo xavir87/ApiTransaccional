@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import org.threeten.bp.LocalDate;
 
+import io.swagger.model.MovimientoDto;
 import io.swagger.model.MensajeSalida;
 import io.swagger.model.MovimientoCliente;
 import io.swagger.model.MovimientoDto;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
@@ -86,6 +89,63 @@ public class MovimientoApiController implements MovimientoApi {
 			return Validaciones.validarResultado(e);
 		}
 
+	}
+
+	@Override
+	public ResponseEntity<?> putMovimiento(@Valid MovimientoDto body) {
+		// TODO Auto-generated method stub
+		MensajeSalida mensaje = new MensajeSalida();
+		try {
+			log.info("INICIO DEL PROCESO");
+			MovimientoDto movimiento = movimientoSvc.putMovimiento(body);
+			return new ResponseEntity<>(movimiento, HttpStatus.OK);
+		} catch (NegocioExcepciones e) {
+			log.error("ERROR EN EL PROCESO");
+			return Validaciones.validarResultado(e);
+		} catch (Exception e) {
+			log.error("Couldn't serialize response for content type application/json", e);
+			mensaje.codigo("9999");
+			mensaje.setMensajeSalida(e.getMessage());
+			return new ResponseEntity<MensajeSalida>(mensaje, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> getMovimiento() {
+		// TODO Auto-generated method stub
+		MensajeSalida mensaje = new MensajeSalida();
+		try {
+			log.info("INICIO DEL PROCESO");
+			List<MovimientoDto> movimiento = movimientoSvc.getMovimiento();
+			return new ResponseEntity<>(movimiento, HttpStatus.OK);
+		} catch (NegocioExcepciones e) {
+			log.error("ERROR EN EL PROCESO");
+			return Validaciones.validarResultado(e);
+		} catch (Exception e) {
+			log.error("Couldn't serialize response for content type application/json", e);
+			mensaje.codigo("9999");
+			mensaje.setMensajeSalida(e.getMessage());
+			return new ResponseEntity<MensajeSalida>(mensaje, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> eliminarMovimiento(String movimientoId) {
+		// TODO Auto-generated method stub
+		MensajeSalida mensaje = new MensajeSalida();
+		try {
+			log.info("INICIO DEL PROCESO");
+			boolean movimiento = movimientoSvc.eliminarMovimiento(movimientoId);
+			return new ResponseEntity<>(movimiento, HttpStatus.OK);
+		} catch (NegocioExcepciones e) {
+			log.error("ERROR EN EL PROCESO");
+			return Validaciones.validarResultado(e);
+		} catch (Exception e) {
+			log.error("Couldn't serialize response for content type application/json", e);
+			mensaje.codigo("9999");
+			mensaje.setMensajeSalida(e.getMessage());
+			return new ResponseEntity<MensajeSalida>(mensaje, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }
